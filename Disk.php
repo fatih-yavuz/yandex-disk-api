@@ -5,6 +5,8 @@ use GuzzleHttp\Client;
 
 /**
  * Class Disk
+ * @author Fatih Yavuz
+ * @url https://github.com/yesilmadde/yandex_disk
  */
 class Disk
 {
