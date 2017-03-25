@@ -1,14 +1,60 @@
-**Introduction**
+# Yandex Disk Api Client
 
-This library is built to use Yandex Disk API with PHP in object oriented way.
+This library is built to deal with Yandex Disk API.
 
-**Information from Yandex**
+### Installation
 
-Yandex.Disk makes it possible to manage Disk resources (files and folders) using REST API HTTP requests.
-The Yandex.Disk API is intended for applications that work with the files of Yandex.Disk users or store their own files and settings on Yandex.Disk.
-This document describes available API calls and formats for requests and responses. To make your first call, read the section Accessing the API.
-Currently, the API allows:
-Getting meta information about resources.
-Uploading files to a Disk and downloading them.
-Creating new folders.
-Copying, moving and deleting resources.
+```sh
+composer require yesilmadde/yandex-disk-api
+```
+
+
+
+# Usage
+First you need to create an alias
+```php
+use Yesilmadde\Disk;
+```
+  - Get an Id from Yandex then use that id to create an object from the class
+```php
+$disk = new Disk('Your Id');
+```
+ - Now you need to obtain a token from Yandex. To get the url where you can obtain the token call getLoginToken method.
+```php
+$disk->getLoginToken();
+```
+ - The method call above, will return the url where you can get the token. The url will redirect you to the call back url specified while creating Yandex Disk API app. In your call back file you can call the following method. It will return the token.
+```php
+Disk::handleCallback();
+```
+ - Having obtained to token, you need to set it.
+```php
+$disk->setToken('your_token');
+```
+ - Now, you are ready to use all methods. For example:
+```php
+$disk->aboutDisk();
+```
+
+
+You can also:
+  - Upload files to your Yandex disk.
+```php
+$disk->uploadFile('your_file');
+```
+  - Download files from your Yandex disk
+```php
+$disk->downloadOwnFile('file_path');
+```
+  - Download files to your Yandex disk.
+```php
+$disk->downloadOthersFile('url','whatever_you_want_to_name_it');
+```
+  - Save public files from Yandex disk to your Yandex disk.
+```php
+$disk->saveToDisk('url');
+```
+ -- Any many more, see [offical documentation]
+ 
+ [offical documentation]: https://tech.yandex.com/disk/api/concepts/about-docpage/
+
