@@ -9,8 +9,12 @@
       "email": "fatihjy@gmail.com"
     }
   ],
+  "autoload": {
+        "psr-4": {
+            "": "src/"
+        }
+    },
   "require": {
-    "guzzlehttp/guzzle": "^6.2",
-    "ideneal/openload": "~1.0"
+    "guzzlehttp/guzzle": "^6.2"
   }
 }
