@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "601ad8dd6b71a3ac47ab95699f105aa0",
-    "content-hash": "2b2d22bda05e6b614c8a54728754ec2c",
+    "hash": "7d6998f4d582a1534d916aaea7d4d7a0",
+    "content-hash": "41c5b4722f4e44323442f0597a14110a",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -184,6 +184,48 @@
                 "url"
             ],
             "time": "2017-03-20 17:10:46"
+        },
+        {
+            "name": "ideneal/openload",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Ideneal/OpenLoad.git",
+                "reference": "82cc24a0eee51293a8d3471a951f45b6ac866958"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Ideneal/OpenLoad/zipball/82cc24a0eee51293a8d3471a951f45b6ac866958",
+                "reference": "82cc24a0eee51293a8d3471a951f45b6ac866958",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~6.0",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "4.3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ideneal\\OpenLoad\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Pedone",
+                    "email": "ideneal.ztl@gmail.com",
+                    "homepage": "http://ideneal.altervista.org/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "OpenLoad Service Client Library",
+            "time": "2016-04-16 09:10:54"
         },
         {
             "name": "psr/http-message",

@@ -10,6 +10,7 @@
     }
   ],
   "require": {
-    "guzzlehttp/guzzle": "^6.2"
+    "guzzlehttp/guzzle": "^6.2",
+    "ideneal/openload": "~1.0"
   }
 }
