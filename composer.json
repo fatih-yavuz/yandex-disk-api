@@ -1,11 +1,11 @@
 {
-  "name": "yesilmadde/yandex_disk",
+  "name": "yesilmadde/yandex-disk-api",
   "description": "This library is built to use Yandex Disk API with PHP in object oriented way.",
   "type": "library",
   "license": "MIT",
   "authors": [
     {
-      "name": "fatih",
+      "name": "yesilmadde",
       "email": "fatihjy@gmail.com"
     }
   ],
