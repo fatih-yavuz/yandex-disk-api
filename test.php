@@ -1,6 +1,7 @@
 <?php
 
 include 'Disk.php';
+use Yesilmadde\Disk;
 
 $id = '';
 

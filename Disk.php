@@ -1,4 +1,5 @@
 <?php
+namespace Yesilmadde;
 use GuzzleHttp\Client;
 
 /**
