@@ -12,7 +12,7 @@ class Disk
     /**
      * @var string
      */
-    private $id
+    private $id;
     /**
      * @var string
      */
