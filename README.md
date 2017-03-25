@@ -5,7 +5,7 @@ This library is built to deal with Yandex Disk API.
 ### Installation
 
 ```sh
-composer require yesilmadde/yandex-disk-api
+composer require siyahmadde/yandex-disk-api
 ```
 
 
@@ -13,7 +13,7 @@ composer require yesilmadde/yandex-disk-api
 # Usage
 First you need to create an alias
 ```php
-use Yesilmadde\Disk;
+use Siyahmadde\Disk;
 ```
   - Get an Id from Yandex then use that id to create an object from the class
 ```php
