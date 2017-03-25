@@ -1,19 +1,17 @@
 <?php
-
-require 'autoload.php';
 use GuzzleHttp\Client;
 
 /**
  * Class Disk
  * @author Fatih Yavuz
- * @url https://github.com/yesilmadde/yandex_disk
+ * @source https://github.com/yesilmadde/yandex-disk-api
  */
 class Disk
 {
     /**
      * @var string
      */
-    private $id = ''; //Your id comes here
+    private $id
     /**
      * @var string
      */
@@ -39,8 +37,9 @@ class Disk
     /**
      * Disk constructor.
      */
-    public function __construct()
+    public function __construct($id)
     {
+        $this->id = $id;
         $this->client = new Client();
         $this->loginToken();
         $this->headers = ['Authorization' => $this->auth_type . ' ' . $this->token];
@@ -63,7 +62,7 @@ class Disk
      * @param $url
      * @throws Exception
      */
-    public function handleCallback($url)
+    public static function handleCallback($url)
     {
         echo '<script>';
         echo 'var token = window.location.hash.substr(1);';
@@ -315,7 +314,7 @@ class Disk
      * @param $path
      * @return bool
      */
-    public function downloadFile($path)
+    public function downloadOwnFile($path)
     {
         $uri = 'https://cloud-api.yandex.net/v1/disk/resources/download?path='.$path;
         $request = $this->client->request('GET',$uri,['headers' => $this->headers]);
@@ -323,6 +322,24 @@ class Disk
         $href = json_decode($response)->href;
 
         return copy($href,$path);
+    }
+
+    public function downloadFile($path)
+    {
+        $uri = 'https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key='.$path;
+        $request = $this->client->request('GET',$uri,['headers' => $this->headers]);
+        $response = $request->getBody()->getContents();
+        $href = json_decode($response)->href;
+        copy($href,'a.zip');
+    }
+
+    public function saveToDisk($path)
+    {
+        $key = urlencode($key);
+        $uri = 'https://cloud-api.yandex.net/v1/disk/public/resources/save-to-disk/?public_key='.$path;
+        $request = $this->client->request('POST',$uri,['headers' => $this->headers]);
+        $response = $request->getBody()->getContents();
+        return $response;
     }
 
     /**

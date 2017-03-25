@@ -2,6 +2,8 @@
 
 include 'Disk.php';
 
-$disk = new Disk();
+$id = '';
 
-$disk->downloadFile('image.png');
+$disk = new Disk($id);
+
+$disk->downloadFile('your-file');

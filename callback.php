@@ -3,5 +3,4 @@
 
 include 'Disk.php';
 
-$disk = new Disk();
-$disk->handleCallback('run.php');
+Disk::handleCallback('run.php');
