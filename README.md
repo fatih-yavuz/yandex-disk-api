@@ -54,7 +54,7 @@ $disk->downloadOthersFile('url','whatever_you_want_to_name_it');
 ```php
 $disk->saveToDisk('url');
 ```
- -- Any many more, see [offical documentation]
+ -- And many more, see [offical documentation]
  
  [offical documentation]: https://tech.yandex.com/disk/api/concepts/about-docpage/
 
