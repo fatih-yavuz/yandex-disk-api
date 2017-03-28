@@ -1,11 +1,11 @@
 <?php
-namespace Siyahmadde;
+namespace Yesilmadde;
 use GuzzleHttp\Client;
 
 /**
  * Class Disk
  * @author Fatih Yavuz
- * @source https://github.com/siyahmadde/yandex-disk-api
+ * @source https://github.com/yesilmadde/yandex-disk-api
  */
 class Disk
 {
@@ -57,7 +57,7 @@ class Disk
      * @param $url
      * @throws Exception
      */
-    public static function handleCallback()
+    public static function handleCallback($url)
     {
         echo '<script>';
         echo 'var token = window.location.hash.substr(1);';
@@ -78,6 +78,23 @@ class Disk
 
         return $result;
     }
+
+    // This method loads token from the file if it exists and valid. Else, returns false.
+    // This is used in the getLoginToken() and there is no need to use anywhere else.
+    // public function validateToken()
+    // {
+    //     if (file_exists('token.json')) {
+    //         $data = file_get_contents('token.json');
+    //         $data = json_decode($data);
+    //         if ($data->expires_at < date('YmdHis', time())) {
+    //             return false;
+    //         }
+    //         $this->token = $data->access_token;
+    //         $this->expires = $data->expires_at;
+    //         return true;
+    //     }
+    //     return false;
+    // }
 
     /**
      * @param string $path
@@ -125,7 +142,7 @@ class Disk
      */
     public function metaInfo($path, array $options = [])
     {
-        $uri = 'https://cloud-api.yandex.net/v1/disk/resources?path=' . $path;
+        $uri = 'https://cloud-api.yandex.net/v1/disk/public/resources?public_key=' . $path;
         foreach ($options as $key => $option) {
             $uri .= '&' . $key . '=' . $option;
         }
@@ -298,19 +315,21 @@ class Disk
         return copy($href,$path);
     }
 
-    public function downloadOthersFile($url,$filename)
+    public function downloadFile($path)
     {
-        $uri = 'https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key='.$url;
+        $uri = 'https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key='.$path;
         $request = $this->client->request('GET',$uri,['headers' => $this->headers]);
         $response = $request->getBody()->getContents();
         $href = json_decode($response)->href;
-        copy($href,$filename);
+        $name = md5(time()) . '.zip';
+        copy($href,'downloads/'.$name);
+        return $name;
     }
 
-    public function saveToDisk($url)
+    public function saveToDisk($path)
     {
-        $key = urlencode($key);
-        $uri = 'https://cloud-api.yandex.net/v1/disk/public/resources/save-to-disk/?public_key='.$url;
+        $key = urlencode($path);
+        $uri = 'https://cloud-api.yandex.net/v1/disk/public/resources/save-to-disk/?public_key='.$path;
         $request = $this->client->request('POST',$uri,['headers' => $this->headers]);
         $response = $request->getBody()->getContents();
         return $response;
