@@ -2,7 +2,6 @@
   "name": "siyahmadde/yandex-disk-api",
   "description": "This library is built to use Yandex Disk API with PHP in object oriented way.",
   "type": "library",
-  "license": "MIT",
   "authors": [
     {
       "name": "siyahmadde",
@@ -11,7 +10,7 @@
   ],
   "autoload": {
         "psr-4": {
-            "Yesilmadde\\": "src/"
+            "Siyahmadde\\": "src/"
         }
     },
   "require": {
