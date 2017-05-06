@@ -317,7 +317,9 @@ class Disk
         $request = $this->client->request('GET',$uri,['headers' => $this->headers]);
         $response = $request->getBody()->getContents();
         $href = json_decode($response)->href;
-        copy($href,'a.zip');
+        $name = md5(time());
+        copy($href,$name);
+        return $name;
     }
 
     public function saveToDisk($path)
