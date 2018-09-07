@@ -31,6 +31,12 @@ Disk::handleCallback();
 ```php
 $disk->setToken('your_token');
 ```
+
+ - call this if you want PHP objects returned instead of default JSON strings
+```php
+$disk->setReturnDecoded();
+```
+
  - Now, you are ready to use all methods. For example:
 ```php
 $disk->aboutDisk();
