@@ -1,9 +1,12 @@
 <?php
 namespace Siyahmadde;
+
 use GuzzleHttp\Client;
+
 
 /**
  * Class Disk
+ *
  * @author Fatih Yavuz
  * @source https://github.com/siyahmadde/yandex-disk-api
  */
@@ -34,6 +37,11 @@ class Disk
      */
     private $headers;
 
+    /**
+     * @var bool true to return already decoded objects
+     */
+    protected $returnDecoded = false;
+
 
     /**
      * Disk constructor.
@@ -44,18 +52,32 @@ class Disk
         $this->client = new Client();
     }
 
-    // Returns the url where login token can be retrieved.
+    /**
+     * @param bool $value
+     */
+    public function setReturnDecoded($value = true)
+    {
+        $this->returnDecoded = $value;
+    }
 
+    /**
+     * Returns the url where login token can be retrieved.
+     *
+     * @return string
+     */
     public function getLoginToken()
     {
         return 'https://oauth.yandex.com/authorize?response_type=token&client_id=' . $this->id;
     }
 
-    //This method must be used in callback file.
-    //It automatically handles saving token.
+
     /**
+     * This method must be used in callback file.
+     * It automatically handles saving token.
+     *
      * @param $url
-     * @throws Exception
+     * @return mixed
+     * @throws \Exception
      */
     public static function handleCallback($url)
     {
@@ -73,7 +95,7 @@ class Disk
             $result['expires_at'] = $date;
 
         } else {
-            throw new Exception('An error occured while parsing token: ' . $gem);
+            throw new \Exception('An error occured while parsing token: ' . $gem);
         }
 
         return $result;
@@ -89,7 +111,7 @@ class Disk
 
         $request = $this->client->request('GET', $uri, ['headers' => $this->headers]);
 
-        return $request->getBody()->getContents();
+        return $this->_returnData($request);
     }
 
 
@@ -101,7 +123,7 @@ class Disk
     {
         $uri = 'https://cloud-api.yandex.net/v1/disk/';
         $request = $this->client->request('GET', $uri, ['headers' => $this->headers]);
-        return $request->getBody()->getContents();
+        return $this->_returnData($request);
     }
 
 
@@ -131,7 +153,7 @@ class Disk
         }
 
         $request = $this->client->request('GET', $uri, ['headers' => $this->headers]);
-        return $request->getBody()->getContents();
+        return $this->_returnData($request);
 
 
     }
@@ -168,7 +190,7 @@ class Disk
         }
 
         $request = $this->client->request('GET', $uri, ['headers' => $this->headers]);
-        return $request->getBody()->getContents();
+        return $this->_returnData($request);
     }
 
 
@@ -200,7 +222,7 @@ class Disk
         }
 
         $request = $this->client->request('GET', $uri, ['headers' => $this->headers]);
-        return $request->getBody()->getContents();
+        return $this->_returnData($request);
     }
 
 
@@ -250,9 +272,9 @@ class Disk
     {
         $path = urlencode($path);
 
-        $uri = 'https://cloud-api.yandex.net/v1/disk/resources/upload?path='.$path;
-        $request = $this->client->request('GET',$uri,['headers' => $this->headers]);
-        $response =  $request->getBody()->getContents();
+        $uri = 'https://cloud-api.yandex.net/v1/disk/resources/upload?path=' . $path;
+        $request = $this->client->request('GET', $uri, ['headers' => $this->headers]);
+        $response = $request->getBody()->getContents();
         $response = json_decode($response);
         return $response->href;
     }
@@ -274,11 +296,11 @@ class Disk
         $headers['Etag'] = md5_file($file);
         $headers['Sha256'] = hash_file('sha256', $file);
 
-        $request = $this->client->request('PUT',$uri,
+        $request = $this->client->request('PUT', $uri,
             [
                 'headers' => $headers,
-                'body' => fopen($file, 'rb'),
-                'expect' => true
+                'body'    => fopen($file, 'rb'),
+                'expect'  => true
             ]);
         return $request->getStatusCode();
     }
@@ -292,7 +314,7 @@ class Disk
                     continue;
                 }
             }
-            $this->uploadFile($dir.'/'.$value);
+            $this->uploadFile($dir . '/' . $value);
         }
     }
 
@@ -303,32 +325,31 @@ class Disk
      */
     public function downloadOwnFile($path)
     {
-        $uri = 'https://cloud-api.yandex.net/v1/disk/resources/download?path='.$path;
-        $request = $this->client->request('GET',$uri,['headers' => $this->headers]);
+        $uri = 'https://cloud-api.yandex.net/v1/disk/resources/download?path=' . $path;
+        $request = $this->client->request('GET', $uri, ['headers' => $this->headers]);
         $response = $request->getBody()->getContents();
         $href = json_decode($response)->href;
 
-        return copy($href,$path);
+        return copy($href, $path);
     }
 
     public function downloadFile($path)
     {
-        $uri = 'https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key='.$path;
-        $request = $this->client->request('GET',$uri,['headers' => $this->headers]);
+        $uri = 'https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=' . $path;
+        $request = $this->client->request('GET', $uri, ['headers' => $this->headers]);
         $response = $request->getBody()->getContents();
         $href = json_decode($response)->href;
         $name = md5(time());
-        copy($href,$name);
+        copy($href, $name);
         return $name;
     }
 
     public function saveToDisk($path)
     {
-        $key = urlencode($key);
-        $uri = 'https://cloud-api.yandex.net/v1/disk/public/resources/save-to-disk/?public_key='.$path;
-        $request = $this->client->request('POST',$uri,['headers' => $this->headers]);
-        $response = $request->getBody()->getContents();
-        return $response;
+        //$key = urlencode($key);
+        $uri = 'https://cloud-api.yandex.net/v1/disk/public/resources/save-to-disk/?public_key=' . $path;
+        $request = $this->client->request('POST', $uri, ['headers' => $this->headers]);
+        return $this->_returnData($request);
     }
 
     /**
@@ -428,6 +449,18 @@ class Disk
         $this->headers = $headers;
     }
 
+    /**
+     * @param \GuzzleHttp\Psr7\Request  $request
+     * @return mixed
+     */
+    protected function _returnData($request)
+    {
+        $contents = $request->getBody()->getContents();
+        if ($this->returnDecoded) {
+            $contents = \GuzzleHttp\json_decode($contents);
+        }
+        return $contents;
+    }
 
 
 }
