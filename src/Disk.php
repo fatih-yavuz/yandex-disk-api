@@ -193,6 +193,17 @@ class Disk
         return $this->_returnData($request);
     }
 
+    /**
+     * @param $path
+     * @param array $parameters
+     * @return mixed
+     */
+    public function getResource($path, $parameters = [])
+    {
+        $parameters = array_merge($parameters, ['path' => $path]);
+        return $this->request('resources', $parameters);
+    }
+
 
     //The API returns a list of the files most recently uploaded to Yandex.Disk.
     //The list can be filtered by file type (audio, video, image, and so on). Each file type is detected by Disk when uploading.
@@ -450,7 +461,31 @@ class Disk
     }
 
     /**
-     * @param \GuzzleHttp\Psr7\Request  $request
+     * @param $command
+     * @param array $parameters
+     * @param string $method
+     * @return mixed|\Psr\Http\Message\ResponseInterface
+     */
+    protected function _request($command, $parameters, $method)
+    {
+        $uri = $this->base_uri . $command . '?' . http_build_query($parameters);
+        return $this->client->request($method, $uri, ['headers' => $this->headers]);
+    }
+
+    /**
+     * @param $command
+     * @param array $parameters
+     * @param string $method
+     * @return mixed
+     */
+    public function request($command, $parameters = [], $method = 'GET')
+    {
+        $request = $this->_request($command, $parameters, $method);
+        return $this->_returnData($request);
+    }
+
+    /**
+     * @param \GuzzleHttp\Psr7\Request $request
      * @return mixed
      */
     protected function _returnData($request)
