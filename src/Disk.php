@@ -468,8 +468,15 @@ class Disk
      */
     protected function _request($command, $parameters, $method)
     {
-        $uri = $this->base_uri . $command . '?' . http_build_query($parameters);
-        return $this->client->request($method, $uri, ['headers' => $this->headers]);
+        $old = http_build_query($parameters);
+        $uri = $this->base_uri . $command . '?' . http_build_query($parameters, null, '&', PHP_QUERY_RFC3986);
+        try {
+            return $this->client->request($method, $uri, ['headers' => $this->headers]);
+        } catch (\Throwable $e) {
+            echo "Failed with path $uri";
+            sleep(3);
+            return $this->client->request($method, $uri, ['headers' => $this->headers]);
+        }
     }
 
     /**
