@@ -473,9 +473,15 @@ class Disk
         try {
             return $this->client->request($method, $uri, ['headers' => $this->headers]);
         } catch (\Throwable $e) {
-            echo "Failed with path $uri";
-            sleep(3);
+            echo "#1 Failed with path $uri";
+            sleep(5);
+            try{
             return $this->client->request($method, $uri, ['headers' => $this->headers]);
+            } catch (\Throwable $e) {
+                echo "#2 Failed with path $uri";
+                sleep(5);
+                return $this->client->request($method, $uri, ['headers' => $this->headers]);
+            }
         }
     }
 
